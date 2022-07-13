@@ -31,7 +31,7 @@ This checks if Metres is blank, if so it takes the number values from the feet c
 
 If the feet are blank then it moves on to Metric. Staff can enter metric as m, cm, or mm so I have to regex out the text and check if it's metres, if so return the regex numbers, if not, check for cm and then /100 to convert to metres. Same again for mm. This means staff can enter data how they're used to and the formula will convert any of the inputs to metres.
 
-Cell AF4 is similar but with another twist:
+Cell AF4 is similar converting height into metres, but with another twist:
 =array_constrain(ArrayFormula(
 IF(isblank(X4:X), 
 if(not(isblank(W4:W)), 
@@ -57,3 +57,8 @@ CONVERT(VALUE(REGEXEXTRACT(text(X4:X, "0.00"), "[0-9.]+")), lower(REGEXEXTRACT(X
 
 ))), counta(A4:A)+1, 1)
 
+So for height the added complexity is that there is a left and right height, either one of which could be the longest. We only want the longest. This means I had to do the same formulas but nest them within an IF statement that asks which result is greater and then returns the correct result. This has to be done for meters and feet.
+
+Because it's sheets you can't assign variables. In a language such as JavaScript I'd be able to work out feet or inches as a function, then convert to metres as a function and assign that value to a variable for both heights, compare both variables and return the heighest. However, because it's sheets the only solution is to repeat the code over and over - or split the calculation across multiple rows, with each step being a row. This is a bit easier to read, but much more error prone in sheets (especially if the end user isn't the person who coded the sheet, as is the case here).
+
+I created and managed countless google sheet solutions of compariable complexity throughout my career, part of the reason I'm learning to code is because I enjoyed it so much.
